@@ -4,6 +4,7 @@ import { MoreVertical, X, Phone, Calendar, Plus } from "lucide-react";
 
 interface StudentsProps {
   students: Student[];
+  onAddStudent: (student: Omit<Student, "id" | "enrollDate" | "status" | "attended" | "total" | "attendanceHistory" | "notes">) => void;
 }
 
 const StudentDetail: React.FC<{ student: Student; onClose: () => void }> = ({ student, onClose }) => (
@@ -93,14 +94,116 @@ const StudentDetail: React.FC<{ student: Student; onClose: () => void }> = ({ st
   </div>
 );
 
-const Students: React.FC<StudentsProps> = ({ students }) => {
+const AddStudentModal: React.FC<{ onClose: () => void; onAdd: (student: any) => void }> = ({ onClose, onAdd }) => {
+  const [formData, setFormData] = useState({
+    name: "",
+    subject: "Piano",
+    parentName: "",
+    parentPhone: "",
+    totalFee: 0,
+    paid: 0,
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onAdd({
+      ...formData,
+      debt: formData.totalFee - formData.paid,
+    });
+    onClose();
+  };
+
+  return (
+    <div className="fixed inset-0 bg-foreground/30 z-50 flex items-center justify-center p-4">
+      <div className="bg-card rounded-md border border-border w-full max-w-md">
+        <div className="flex items-center justify-between p-5 border-b border-border">
+          <h3 className="font-bold text-base">Thêm học viên mới</h3>
+          <button onClick={onClose} className="text-muted-foreground hover:text-foreground"><X size={18} /></button>
+        </div>
+        <form onSubmit={handleSubmit} className="p-5 space-y-4">
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Họ và tên</label>
+            <input
+              required
+              className="erp-input"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Môn học</label>
+              <select
+                className="erp-select w-full"
+                value={formData.subject}
+                onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+              >
+                <option>Piano</option>
+                <option>Guitar</option>
+                <option>Violin</option>
+                <option>Thanh nhạc</option>
+              </select>
+            </div>
+            <div className="space-y-2">
+              <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">SĐT Phụ huynh</label>
+              <input
+                required
+                className="erp-input"
+                value={formData.parentPhone}
+                onChange={(e) => setFormData({ ...formData, parentPhone: e.target.value })}
+              />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Tên phụ huynh</label>
+            <input
+              required
+              className="erp-input"
+              value={formData.parentName}
+              onChange={(e) => setFormData({ ...formData, parentName: e.target.value })}
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Học phí khóa</label>
+              <input
+                type="number"
+                required
+                className="erp-input"
+                value={formData.totalFee}
+                onChange={(e) => setFormData({ ...formData, totalFee: Number(e.target.value) })}
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Đã đóng</label>
+              <input
+                type="number"
+                required
+                className="erp-input"
+                value={formData.paid}
+                onChange={(e) => setFormData({ ...formData, paid: Number(e.target.value) })}
+              />
+            </div>
+          </div>
+          <div className="flex gap-3 pt-2">
+            <button type="button" onClick={onClose} className="erp-btn-ghost flex-1">Hủy</button>
+            <button type="submit" className="erp-btn-primary flex-1">Xác nhận</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+const Students: React.FC<StudentsProps> = ({ students, onAddStudent }) => {
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+  const [showAddModal, setShowAddModal] = useState(false);
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-bold">Học viên</h2>
-        <button className="erp-btn-primary flex items-center gap-2">
+        <button onClick={() => setShowAddModal(true)} className="erp-btn-primary flex items-center gap-2">
           <Plus size={16} /> Thêm học viên
         </button>
       </div>
@@ -148,6 +251,7 @@ const Students: React.FC<StudentsProps> = ({ students }) => {
       </div>
 
       {selectedStudent && <StudentDetail student={selectedStudent} onClose={() => setSelectedStudent(null)} />}
+      {showAddModal && <AddStudentModal onClose={() => setShowAddModal(false)} onAdd={onAddStudent} />}
     </div>
   );
 };

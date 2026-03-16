@@ -26,12 +26,26 @@ const Index: React.FC = () => {
     );
   };
 
+  const handleAddStudent = (newStudent: Omit<Student, "id" | "enrollDate" | "status" | "attended" | "total" | "attendanceHistory" | "notes">) => {
+    const student: Student = {
+      ...newStudent,
+      id: Date.now(),
+      enrollDate: new Date().toLocaleDateString("vi-VN"),
+      status: "Đang học",
+      attended: 0,
+      total: 12,
+      attendanceHistory: [],
+      notes: [],
+    };
+    setStudents((prev) => [student, ...prev]);
+  };
+
   const renderContent = () => {
     switch (activeTab) {
       case "dashboard":
         return <Dashboard />;
       case "students":
-        return <Students students={students} />;
+        return <Students students={students} onAddStudent={handleAddStudent} />;
       case "teachers":
         return <Teachers />;
       case "classes":
