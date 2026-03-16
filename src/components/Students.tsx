@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Student, formatVND } from "@/data/mockData";
-import { MoreVertical, X, Phone, Calendar } from "lucide-react";
+import { MoreVertical, X, Phone, Calendar, Plus } from "lucide-react";
 
 interface StudentsProps {
   students: Student[];
@@ -97,8 +97,13 @@ const Students: React.FC<StudentsProps> = ({ students }) => {
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
 
   return (
-    <div className="space-y-4">
-      <h1 className="text-lg font-bold">Quản lý học viên</h1>
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h2 className="text-lg font-bold">Học viên</h2>
+        <button className="erp-btn-primary flex items-center gap-2">
+          <Plus size={16} /> Thêm học viên
+        </button>
+      </div>
 
       <div className="erp-card p-0 overflow-hidden">
         <table className="erp-table">
