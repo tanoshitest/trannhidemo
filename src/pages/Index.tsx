@@ -13,7 +13,6 @@ import { Toaster } from "sonner";
 
 const Index: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabKey>("dashboard");
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [students, setStudents] = useState<Student[]>(STUDENTS);
 
@@ -52,12 +51,10 @@ const Index: React.FC = () => {
       <AppSidebar
         activeTab={activeTab}
         onTabChange={setActiveTab}
-        collapsed={sidebarCollapsed}
-        onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
       />
       <main className="flex-1 flex flex-col min-w-0">
         <TopBar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
-        <div className="flex-1 p-6 overflow-auto">{renderContent()}</div>
+        <div className="flex-1 p-6 overflow-auto no-scrollbar">{renderContent()}</div>
       </main>
     </div>
   );
