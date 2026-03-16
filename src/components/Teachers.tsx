@@ -1,11 +1,16 @@
 import React from "react";
 import { TEACHERS, formatVND } from "@/data/mockData";
+import { Plus } from "lucide-react";
 
 const Teachers: React.FC = () => {
   return (
-    <div className="space-y-4">
-      <h1 className="text-lg font-bold">Quản lý giáo viên</h1>
-
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h2 className="text-lg font-bold">Giáo viên</h2>
+        <button className="erp-btn-primary flex items-center gap-2">
+          <Plus size={16} /> Thêm giáo viên
+        </button>
+      </div>
       <div className="erp-card p-0 overflow-hidden">
         <table className="erp-table">
           <thead>
