@@ -28,10 +28,10 @@ const Dashboard: React.FC = () => {
   const totalDebt = STUDENTS.reduce((sum, s) => sum + s.debt, 0);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <h1 className="text-lg font-bold">Tổng quan</h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         <StatCard
           title="Tổng học viên"
           value="128"
@@ -61,7 +61,7 @@ const Dashboard: React.FC = () => {
 
       <div className="erp-card">
         <h3 className="text-sm font-bold mb-4">Phân tích Thu – Chi (6 tháng gần nhất)</h3>
-        <div className="h-[360px]">
+        <div className="h-[320px]">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={CHART_DATA}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(220, 13%, 91%)" />

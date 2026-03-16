@@ -46,7 +46,7 @@ const Index: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex w-full">
+    <div className="h-screen flex w-full overflow-hidden">
       <Toaster position="top-right" richColors />
       <AppSidebar
         activeTab={activeTab}
